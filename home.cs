@@ -74,6 +74,7 @@ namespace sharpclean
                                 System.Console.WriteLine(home_err + "image not loaded\n");
                             break;*/
                             System.Console.WriteLine("you chose the print menu\n");
+                            break;
                         }
                     case 4:
                         {
@@ -85,6 +86,7 @@ namespace sharpclean
                             break;
                             */
                             System.Console.WriteLine("you chose to clean the image\n");
+                            break;
                         }
                 }
             }
