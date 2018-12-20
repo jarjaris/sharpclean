@@ -24,7 +24,7 @@ namespace sharpclean
         {
             while (good)
             {
-                if (!img.getDataLoaded())
+                if (img == null)
                     startmenu();
                 else
                     fullmenu();
@@ -60,7 +60,7 @@ namespace sharpclean
                     case 2: writefile(); break;
                     case 3:
                         {
-                            if (!img.getDataLoaded())
+                            if (img != null)
                                 img.printmenu();
                             else
                                 System.Console.WriteLine(home_err + "image not loaded\n");
@@ -88,7 +88,7 @@ namespace sharpclean
             string f = "";
             int n = 0;
 
-            if (!img.getDataLoaded()) {
+            if (img != null) {
                 if (cmd.getcmd("delete loaded image? [1]yes, [q]quit - ", ref n, 1))
                     deleteimage();
                 else return;
@@ -96,6 +96,7 @@ namespace sharpclean
 
             if (cmd.getfile("enter file name : ", ref f, ".pgm", 1)) {
                 f = "images/" + f;
+                img = new image();
 
                 /*if (img.load(f))
                     t = new Toolbox(img->getpixels(), img->getImageData().width, img->getImageData().totalpixels);
@@ -108,7 +109,7 @@ namespace sharpclean
         //writes to a pgm
         private void writefile()
         {
-            if (img.getDataLoaded())
+            if (img != null)
             {
                 string f = "";
                 if (cmd.getfile("enter file name : ", ref f, ".pgm", 1))
@@ -137,7 +138,7 @@ namespace sharpclean
         private bool good = true;
         private command cmd;
         //Toolbox* t;
-        image img = new image();
+        image img = null;
 
         private readonly string home_err = "::HOME::error : ";
 

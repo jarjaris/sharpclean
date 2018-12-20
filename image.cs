@@ -30,8 +30,7 @@ namespace sharpclean
 
             //ignore comments
             string comments = "";
-            while (true)
-            {
+            while (true) {
                 comments = infile.ReadLine();
                 if (comments[0] != '#') break;
             }
@@ -70,8 +69,7 @@ namespace sharpclean
                 for (int i = 0; i < mdata.totalpixels; i++)
                     System.IO.File.WriteAllText(filename, Convert.ToString(pixels[i].value) + "\n");
             }
-            else
-            {
+            else {
                 System.IO.File.WriteAllText(filename, mdata.filetype + "\n" + mdata.width + " " + mdata.height + "\n" + mdata.maxgreyval + "\n");
 
                 for (int i = 0; i < mdata.totalpixels; i++) //ofile >> std::hex >> pixels[i].value;
@@ -85,8 +83,7 @@ namespace sharpclean
             string line;
             int i = 0;
 
-            while ((line = f.ReadLine()) != null)
-            {
+            while ((line = f.ReadLine()) != null) {
                 pixels[i].value = Convert.ToByte(line);
                 pixels[i].id = i;
                 i++;
@@ -95,7 +92,6 @@ namespace sharpclean
 
         private void loadP5(System.IO.StreamReader f)
         {
-            //get image data - NEEDS TO READ BYTES THIS WAY DUE TO CHAR CONVERSION ERRORS
             pixels = new pixel[mdata.totalpixels];
 
             char[] buffer = new char[mdata.totalpixels];
@@ -117,8 +113,7 @@ namespace sharpclean
             }
 
             int n = 0;
-            if (cmd.getcmd("[1]print all, [2]image data menu, [q]quit - ", ref n, 1))
-            {
+            if (cmd.getcmd("[1]print all, [2]image data menu, [q]quit - ", ref n, 1)) {
                 switch (n)
                 {
                     case 1: print(); break;
