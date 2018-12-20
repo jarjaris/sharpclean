@@ -19,19 +19,12 @@ namespace sharpclean
 
     class home
     {
-        //ctor
-        public home()
-        {
-            good = true;
-            home_err = "::HOME::error : ";
-        }
-
         //enter here
         public void run()
         {
             while (good)
             {
-                if (/*img == NULL*/ good)
+                if (!img.getDataLoaded())
                     startmenu();
                 else
                     fullmenu();
@@ -67,13 +60,10 @@ namespace sharpclean
                     case 2: writefile(); break;
                     case 3:
                         {
-                            /*
-                            if (img != NULL)
-                                img->printmenu();
+                            if (!img.getDataLoaded())
+                                img.printmenu();
                             else
                                 System.Console.WriteLine(home_err + "image not loaded\n");
-                            break;*/
-                            System.Console.WriteLine("you chose the print menu\n");
                             break;
                         }
                     case 4:
@@ -85,7 +75,6 @@ namespace sharpclean
                                 System.Console.WriteLine(home_err + "toolbox not loaded\n");
                             break;
                             */
-                            System.Console.WriteLine("you chose to clean the image\n");
                             break;
                         }
                 }
@@ -99,38 +88,33 @@ namespace sharpclean
             string f = "";
             int n = 0;
 
-            if (img != NULL)
-            {
+            if (!img.getDataLoaded()) {
                 if (cmd.getcmd("delete loaded image? [1]yes, [q]quit - ", ref n, 1))
                     deleteimage();
                 else return;
             }
 
-            if (cmd.getfile("enter file name : ", ref f, ".pgm", 1))
-            {
-                img = new Image();
-
+            if (cmd.getfile("enter file name : ", ref f, ".pgm", 1)) {
                 f = "images/" + f;
 
-                if (img->load(f))
+                /*if (img.load(f))
                     t = new Toolbox(img->getpixels(), img->getImageData().width, img->getImageData().totalpixels);
-                else
-                {
+                else 
                     deleteimage();
-                }
+                */
             }
         }
 
         //writes to a pgm
         private void writefile()
         {
-            if (img != NULL)
+            if (img.getDataLoaded())
             {
                 string f = "";
                 if (cmd.getfile("enter file name : ", ref f, ".pgm", 1))
                 {
                     f = "saves/" + f;
-                    img->write(f);
+                    img.write(f);
                 }
             }
             else System.Console.WriteLine(home_err + "no image loaded to save");
@@ -150,10 +134,10 @@ namespace sharpclean
             */
         }
 
-        private bool good;
+        private bool good = true;
         private command cmd;
         //Toolbox* t;
-        //Image* img;
+        image img = new image();
 
         private readonly string home_err = "::HOME::error : ";
 

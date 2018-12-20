@@ -8,7 +8,7 @@ namespace sharpclean
 {
     class image
     {
-        public bool load(ref string filename)
+        public bool load(string filename)
         {
             System.IO.StreamReader infile = null;
 
@@ -57,7 +57,7 @@ namespace sharpclean
             return true;
         }
 
-        public void write(ref string filename)
+        public void write(string filename)
         {
             if (!dataLoaded) {
                 Console.WriteLine(image_err + "image data not loaded\n");
@@ -167,6 +167,11 @@ namespace sharpclean
         public data getImageData()
         {
             return mdata;
+        }
+
+        public bool getDataLoaded()
+        {
+            return dataLoaded;
         }
 
         private bool dataLoaded = false;
