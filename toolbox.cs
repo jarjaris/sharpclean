@@ -66,7 +66,7 @@ namespace sharpclean
                     data[2] = data[1] / s.getEdges();
                     data[0] = getAverageValue(Convert.ToInt32(data[1]));
 
-                    conf c = confidence::getconfidence(data);
+                    conf c = confidence.getconfidence(data);
 
                     if (!c.isObj)
                         colorbuffer(255, Convert.ToInt32(data[1]));
@@ -137,7 +137,7 @@ namespace sharpclean
         private command cmd;
 
         private int imageWidth, totalPixels;
-        private List<long> buffer, perimeter;
+        private List<int> buffer, perimeter;
         private double[] data = new double[3]; //average value, size, number of edges
 
         private string ofilename;

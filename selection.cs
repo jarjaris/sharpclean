@@ -106,7 +106,7 @@ namespace sharpclean
                         for (int j = 0; j < whitePixels.Count; j++)
                         {
                             buffer.Add(whitePixels[j].id);
-                            Tree::insert(buff, whitePixels[j].id);
+                            tree.insert(buff, whitePixels[j].id);
                             count++;
                         }
                     }
@@ -119,18 +119,18 @@ namespace sharpclean
         }
         private void findEdges()
         {
-            edge e(width, total);
+            edge e = new edge(width, total);
 
             e.detect(buffer, buff);
 
             perimeter = e.getPerimiter();
             numEdges = e.getEdges();
         }
-        public ref List<long> getBuffer()
+        public ref List<int> getBuffer()
         {
 	        return ref buffer;
         }
-        public ref List<long>  getPerimeter()
+        public ref List<int>  getPerimeter()
         {
 	        return ref perimeter;
         }
@@ -148,7 +148,7 @@ namespace sharpclean
         private pixel[] pixels;
         private int width, total;
 
-        private List<long> buffer, perimeter;
+        private List<int> buffer, perimeter;
         private int bufferSize, numEdges;
 
         private node buff;

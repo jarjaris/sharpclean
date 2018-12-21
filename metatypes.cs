@@ -65,7 +65,7 @@ namespace sharpclean
         public readonly int br = 7;
     };
     //confidence class
-    class conf
+    public class conf
     {
         public double   obj = 0.0, dust = 0.0,
                         o_size = 0.0, d_size = 0.0,

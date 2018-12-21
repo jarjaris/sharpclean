@@ -159,9 +159,9 @@ namespace sharpclean
             return pixels;
         }
 
-        public data getImageData()
+        public ref data getImageData()
         {
-            return mdata;
+            return ref mdata;
         }
 
         public bool getDataLoaded()

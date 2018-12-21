@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace sharpclean
 {
-    class confidence
+    public static class confidence
     {
-        public static conf confidence(double []d)
+        public static conf getconfidence(double[] d)
         {
             //avg, size, edge
-            conf c;
+            conf c = new conf();
             value(c, d[0]);
             size(c, d[1]);
             edges(c, d[2]);
@@ -26,7 +26,7 @@ namespace sharpclean
 
             return c;
         }
-        private static void edges(conf& c, double d)
+        private static void edges(conf c, double d)
         {
             if (d < 18.2) c.d_edge += 95.00;
             else if (d < 30.2) c.d_edge += 77.35;
@@ -43,7 +43,7 @@ namespace sharpclean
             else if (d < 98.85) c.o_edge += 59.56;
             else c.o_edge += 95.00;
         }
-        private static void size(conf& c, double d)
+        private static void size(conf c, double d)
         {
             if (d < 30) c.d_size += 99.00;
             else if (d < 331) c.d_size += 45.68;
@@ -64,7 +64,7 @@ namespace sharpclean
             c.d_size -= 25;
             c.o_size -= 25;
         }
-        private static void value(conf& c, double d)
+        private static void value(conf c, double d)
         {
             if (d < 30) c.d_val += 1.00;
             else if (d < 84) c.d_val += 8.41;

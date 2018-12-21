@@ -35,7 +35,7 @@ namespace sharpclean
         {
             this.p = p;
         }
-        public void getBounds(long id)
+        public void getBounds(int id)
         {
             if ((id % width) < leftmost) leftmost = id % width;
 
@@ -46,7 +46,7 @@ namespace sharpclean
             if (id > bottommost) bottommost = id;
 
         }
-        private bool inbounds(long id)
+        private bool inbounds(int id)
         {
             if (id % width <= leftmost
             || id % width >= rightmost
@@ -56,7 +56,7 @@ namespace sharpclean
 
             return true;
         }
-        public void start(long id)
+        public void start(int id)
         {
             path.Clear();
             pathSize = 0;
@@ -71,7 +71,7 @@ namespace sharpclean
 
             iteratePath();
         }
-        private void addtoPath(direction dir, long id)
+        private void addtoPath(direction dir, int id)
         {
             pathDirection pd = new pathDirection(dir, id);
 
@@ -199,11 +199,8 @@ namespace sharpclean
             for (int i = 0; i < path.Count(); i++)
             {
                 if (p[path[i].id].value <= 255)
-                {
                     p[path[i].id].selected = false;
-                }
-                else
-                {
+                else {
                     p[path[i].id].found = true;
                     foundBuffer.Add(path[i].id);
                 }
@@ -214,8 +211,7 @@ namespace sharpclean
         }
         public void clearFoundBuffer()
         {
-            for (int i = 0; i < foundBuffer.Count(); i++)
-            {
+            for (int i = 0; i < foundBuffer.Count(); i++) {
                 p[foundBuffer[i]].found = false;
                 p[foundBuffer[i]].selected = false;
             }
