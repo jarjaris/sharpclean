@@ -22,6 +22,7 @@ namespace sharpclean
 
             //first line is always version
             mdata.filetype = infile.ReadLine().Substring(0, 2);
+            Console.WriteLine(mdata.filetype);
 
             if (!(mdata.filetype != "P5" || mdata.filetype != "P2")) {
                 Console.WriteLine(image_err + "invalid file type: " + mdata.filetype + "\n");
@@ -32,18 +33,22 @@ namespace sharpclean
             string comments = "";
             while (true) {
                 comments = infile.ReadLine();
+                Console.WriteLine(comments);
                 if (comments[0] != '#') break;
             }
 
             //get width, height, and total
-            string[] ss = infile.ReadLine().Split();
+            string[] ss = comments.Split();
+            Console.WriteLine(ss[0] + "," + ss[1]);
 
             mdata.width  = int.Parse(ss[0]);
             mdata.height = int.Parse(ss[1]);
             mdata.totalpixels = mdata.width * mdata.height;
+            Console.WriteLine(mdata.totalpixels);
 
             //get maximum grey value in file
-            mdata.maxgreyval = Convert.ToChar(infile.ReadLine());
+            mdata.maxgreyval = Convert.ToInt16(infile.ReadLine());
+            Console.WriteLine(mdata.maxgreyval);
 
             //get image data
             if (mdata.filetype == "P2") loadP2(infile);
@@ -86,6 +91,8 @@ namespace sharpclean
             while ((line = f.ReadLine()) != null) {
                 pixels[i].value = Convert.ToByte(line);
                 pixels[i].id = i;
+                pixels[i].found = false;
+                pixels[i].selected = false;
                 i++;
             }
         }
@@ -93,15 +100,16 @@ namespace sharpclean
         private void loadP5(System.IO.StreamReader f)
         {
             pixels = new pixel[mdata.totalpixels];
+            byte[] buffer = new byte[mdata.totalpixels];
 
-            char[] buffer = new char[mdata.totalpixels];
+            string strbuff = f.ReadLine();
+            buffer = Encoding.ASCII.GetBytes(strbuff);
 
-            buffer = f.ReadLine().ToCharArray();
-
-            for (int i = 0; i < mdata.totalpixels; i++)
-            {
-                pixels[i].value = Convert.ToByte(buffer[i]);
+            for (int i = 0; i < mdata.totalpixels; i++) {
+                pixels[i].value = buffer[i];
                 pixels[i].id = i;
+                pixels[i].selected = false;
+                pixels[i].found = false;
             }
         }
 

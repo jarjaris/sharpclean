@@ -19,12 +19,12 @@ namespace sharpclean
         ALL, FILETYPE, DIMENSIONS, TOTALPIXELS, MAXGREYVAL
     };
     //a basic pixel class
-    class pixel
+    struct pixel
     {
-        public bool selected = false;  //used for selection
-        public bool found = false;
-        public byte value = 255;        //grey value
-        public int id = -1;            //ID [0->totalpixels]
+        public bool selected;  //used for selection
+        public bool found;
+        public byte value;        //grey value
+        public int id;            //ID [0->totalpixels]
     };
     //edge and filler use this for navigation around the pixel map
     enum direction

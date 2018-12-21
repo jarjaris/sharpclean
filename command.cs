@@ -55,10 +55,10 @@ namespace sharpclean
                 if (u == quit) break;
                 else if (u.Length > filetype.Length)
                 {
-                    if (u.Substring(4) == filetype)
+                    if (u.Substring(u.Length - 4) == filetype)
                         good = true;
                     else
-                        Console.WriteLine(tab + command_err + "bad filetype - " + u.Substring(4) + "\n");
+                        Console.WriteLine(tab + command_err + "bad filetype - " + u.Substring(u.Length - 4) + "\n");
                 }
                 else
                     Console.WriteLine(tab + command_err + "bad file name - " + u + "\n");

@@ -101,14 +101,14 @@ namespace sharpclean
         private void colorbuffer(byte color, int sizeofbuffer)
         {
             for (int i = 0; i < sizeofbuffer; i++)
-                pixels[buffer[i]].value = color;
+                pixels[buffer[i]].value = Convert.ToByte(color);
         }
 
         //colors the edges of a selection of pixels
         private void coloredges(byte color, int sizeofbuffer)
         {
             for (int i = 0; i < sizeofbuffer; i++)
-                pixels[perimeter[i]].value = color;
+                pixels[perimeter[i]].value = Convert.ToByte(color);
         }
 
         //writes some data to a csv, if the user wants
