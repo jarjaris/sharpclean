@@ -35,7 +35,7 @@ namespace sharpclean
         {
             this.p = p;
         }
-        public void getBounds(int id)
+        public void getBounds(long id)
         {
             if ((id % width) < leftmost) leftmost = id % width;
 
@@ -46,7 +46,7 @@ namespace sharpclean
             if (id > bottommost) bottommost = id;
 
         }
-        private bool inbounds(int id)
+        private bool inbounds(long id)
         {
             if (id % width <= leftmost
             || id % width >= rightmost
@@ -56,7 +56,7 @@ namespace sharpclean
 
             return true;
         }
-        public void start(int id)
+        public void start(long id)
         {
             path.Clear();
             pathSize = 0;
@@ -71,7 +71,7 @@ namespace sharpclean
 
             iteratePath();
         }
-        private void addtoPath(direction dir, int id)
+        private void addtoPath(direction dir, long id)
         {
             pathDirection pd = new pathDirection(dir, id);
 
