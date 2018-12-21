@@ -214,11 +214,11 @@ namespace sharpclean
         private int[] field = new int[8];
         private bool fieldSet;
 
-        private List<int> perimeter, stack;
+        private List<int> perimeter = new List<int>();
+        private List<int> stack = new List<int>();
         private int numEdges, perimSize, width, total, tolerance;
-        private neighbor n;
-
-        private readonly string edge_err = "::EDGE::error : ";
+        private neighbor n = new neighbor();
+        
         private readonly string edge_warn = "::EDGE::warning : ";
     }
 }

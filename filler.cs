@@ -196,9 +196,9 @@ namespace sharpclean
         }
         private void clearPath()
         {
-            for (int i = 0; i < path.Count(); i++)
+            for (int i = 0; i < path.Count; i++)
             {
-                if (p[path[i].id].value <= 255)
+                if (p[path[i].id].value == 255)
                     p[path[i].id].selected = false;
                 else {
                     p[path[i].id].found = true;
@@ -211,7 +211,7 @@ namespace sharpclean
         }
         public void clearFoundBuffer()
         {
-            for (int i = 0; i < foundBuffer.Count(); i++) {
+            for (int i = 0; i < foundBuffer.Count; i++) {
                 p[foundBuffer[i]].found = false;
                 p[foundBuffer[i]].selected = false;
             }
@@ -221,11 +221,10 @@ namespace sharpclean
         private pixel[] p;
         private int width, total;
         private int topmost, bottommost, leftmost, rightmost;
-        private List<pathDirection> path;
-        private List<int> foundBuffer;
+        private List<pathDirection> path = new List<pathDirection>();
+        private List<int> foundBuffer = new List<int>();
         private int pathSize;
         private bool boundsError;
-        private readonly string filler_err = "::FILLER::error : ";
         private readonly string filler_warn = "::FILLER::warning : ";
     }
 

@@ -172,9 +172,8 @@ namespace sharpclean
         private bool dataLoaded = false;
         private data mdata;
         private pixel[] pixels;
-        private command cmd;
+        private command cmd = new command();
 
         private readonly string image_err = "::IMAGE::error : ";
-        private readonly string image_msg = "::IMAGE::message : ";
     }
 }

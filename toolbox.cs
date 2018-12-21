@@ -131,19 +131,16 @@ namespace sharpclean
 
             return avg / sizeofbuffer;
         }
-
-        private image img = null;
+        
         private pixel[] pixels = null;
-        private command cmd;
+        private command cmd = new command();
 
         private int imageWidth, totalPixels;
         private List<int> buffer, perimeter;
         private double[] data = new double[3]; //average value, size, number of edges
 
         private string ofilename;
-        private System.IO.StreamReader ofile;
 
         private readonly string toolbox_err = "::TOOLBOX::error : ";
-        private readonly string toolbox_msg = "::TOOLBOX::message : ";
     }
 }

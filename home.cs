@@ -13,6 +13,8 @@ namespace sharpclean
         {
             home m_h = new home();
 
+            m_h.run();
+
             return 0;
         }
     }
@@ -126,7 +128,7 @@ namespace sharpclean
         }
 
         private bool good = true;
-        private command cmd;
+        private command cmd = new command();
         toolbox t = null;
         image img = null;
 
