@@ -70,7 +70,7 @@ namespace sharpclean
         }
 
         private readonly string command_err = "::COMMAND::error : ";
-        private readonly string tab         = ">> ";
-        private readonly string quit           = "q";
+        private readonly string tab = ">> ";
+        private readonly string quit = "q";
     }
 }

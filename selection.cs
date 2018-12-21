@@ -25,7 +25,7 @@ namespace sharpclean
 
         public bool get(int i)
         {
-	        if (checkPixel(pixels[i], VALUE_THRESHOLD))
+	        if (checkPixel(ref pixels[i], VALUE_THRESHOLD))
 	        {
 		        iterate(VALUE_THRESHOLD);
 
@@ -46,25 +46,25 @@ namespace sharpclean
                 nextPixel(buffer[i], value);
         }
 
-        private void nextPixel(int i, int value)
+        private void nextPixel(long i, int value)
         {
             if ((i - width) > 0)
             {
-                checkPixel(pixels[i - width - 1], value);   //top left
-                checkPixel(pixels[i - width], value);       //top center
-                checkPixel(pixels[i - width + 1], value);   //top right
+                checkPixel(ref pixels[i - width - 1], value);   //top left
+                checkPixel(ref pixels[i - width], value);       //top center
+                checkPixel(ref pixels[i - width + 1], value);   //top right
             }
 
             if (i % width != 0)
-                checkPixel(pixels[i - 1], value);   //center left
+                checkPixel(ref pixels[i - 1], value);   //center left
             if (i % (width + 1) != 0)
-                checkPixel(pixels[i + 1], value);   //center right
+                checkPixel(ref pixels[i + 1], value);   //center right
 
             if ((i + width) < total)
             {
-                checkPixel(pixels[i + width - 1], value);   //bottom left
-                checkPixel(pixels[i + width], value);       //bottom center
-                checkPixel(pixels[i + width + 1], value);   //bottom right
+                checkPixel(ref pixels[i + width - 1], value);   //bottom left
+                checkPixel(ref pixels[i + width], value);       //bottom center
+                checkPixel(ref pixels[i + width + 1], value);   //bottom right
             }
         }
         private bool checkPixel(ref pixel p, int value)
@@ -101,10 +101,12 @@ namespace sharpclean
 
                     if (whitePixels.Count != 0)
                     {
-                        for (int i = 0; i < whitePixels.size(); i++)
+                        //j once was i, not sure how this wasn't an issue in c++
+                        //but reassigning i here may have slowed things down a lot
+                        for (int j = 0; j < whitePixels.Count; j++)
                         {
-                            buffer.Add(whitePixels[i].id);
-                            Tree::insert(buff, whitePixels[i].id);
+                            buffer.Add(whitePixels[j].id);
+                            Tree::insert(buff, whitePixels[j].id);
                             count++;
                         }
                     }

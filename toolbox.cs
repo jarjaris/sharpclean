@@ -8,7 +8,7 @@ namespace sharpclean
 {
     class toolbox
     {
-        toolbox(pixel[] p, int width, int total)
+        public toolbox(pixel[] p, int width, int total)
         {
             pixels = p;
             imageWidth = width;
@@ -52,7 +52,8 @@ namespace sharpclean
                 writeData = true;
             }
 
-            //Selection s(pixels, imageWidth, totalPixels);
+            selection s = new selection(pixels, imageWidth, totalPixels);
+
             watch.Start();
             for (int i = 0; i < totalPixels; i++)
             {
@@ -68,7 +69,7 @@ namespace sharpclean
                     conf c = confidence::getconfidence(data);
 
                     if (!c.isObj)
-                        colorbuffer(255, data[1]);
+                        colorbuffer(255, Convert.ToInt32(data[1]));
 
                     if (writeData)
                         printcsv(ref c);
@@ -136,7 +137,7 @@ namespace sharpclean
         private command cmd;
 
         private int imageWidth, totalPixels;
-        private List<int> buffer, perimeter;
+        private List<long> buffer, perimeter;
         private double[] data = new double[3]; //average value, size, number of edges
 
         private string ofilename;

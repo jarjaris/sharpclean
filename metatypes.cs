@@ -23,7 +23,7 @@ namespace sharpclean
     {
         public bool selected = false;  //used for selection
         public bool found = false;
-        public byte value = 255;    //grey value
+        public byte value = 255;        //grey value
         public long id = -1;            //ID [0->totalpixels]
     };
     //edge and filler use this for navigation around the pixel map

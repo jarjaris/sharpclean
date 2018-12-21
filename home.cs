@@ -59,24 +59,21 @@ namespace sharpclean
                     case 1: loadfile(); break;
                     case 2: writefile(); break;
                     case 3:
-                        {
-                            if (img != null)
-                                img.printmenu();
-                            else
-                                System.Console.WriteLine(home_err + "image not loaded\n");
-                            break;
-                        }
+                    {
+                        if (img != null)
+                            img.printmenu();
+                        else
+                            System.Console.WriteLine(home_err + "image not loaded\n");
+                        break;
+                    }
                     case 4:
-                        {
-                            /*
-                            if (t != NULL)
-                                t->clean();
-                            else
-                                System.Console.WriteLine(home_err + "toolbox not loaded\n");
-                            break;
-                            */
-                            break;
-                        }
+                    {
+                        if (t != null)
+                            t.clean();
+                        else
+                            System.Console.WriteLine(home_err + "toolbox not loaded\n");
+                        break;
+                    }
                 }
             }
             else good = false;
@@ -98,11 +95,10 @@ namespace sharpclean
                 f = "images/" + f;
                 img = new image();
 
-                /*if (img.load(f))
-                    t = new Toolbox(img->getpixels(), img->getImageData().width, img->getImageData().totalpixels);
+                if (img.load(f))
+                    t = new toolbox(img.getpixels(), img.getImageData().width, img.getImageData().totalpixels);
                 else 
                     deleteimage();
-                */
             }
         }
 
@@ -121,23 +117,17 @@ namespace sharpclean
             else System.Console.WriteLine(home_err + "no image loaded to save");
         }
 
-        //deletes the loaded image (only within the program)
+        //if toolbox is set up give it up then give up the loaded image
         private void deleteimage()
         {
-            /*
-            if (t != NULL)
-            {
-                delete t;
-                t = NULL;
-            }
-            delete img;
-            img = NULL;
-            */
+            if (t != null)
+                t = null;
+            img = null;
         }
 
         private bool good = true;
         private command cmd;
-        //Toolbox* t;
+        toolbox t = null;
         image img = null;
 
         private readonly string home_err = "::HOME::error : ";
