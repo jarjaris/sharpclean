@@ -1,0 +1,157 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace sharpclean
+{
+    class selection
+    {
+        public const byte VALUE_THRESHOLD = 255;
+
+        selection()
+        {
+            Console.Write(selection_err + "initialized without pixels\n");
+        }
+
+        public selection(pixel[] p, int width, int total)
+        {
+            pixels = p;
+            this.width = width;
+            this.total = total;
+            bufferSize = 0;
+        }
+
+        public bool get(int i)
+        {
+	        if (checkPixel(pixels[i], VALUE_THRESHOLD))
+	        {
+		        iterate(VALUE_THRESHOLD);
+
+		        if (bufferSize > 0 && bufferSize< 2700)
+		        {
+			        fillPixels();
+                    findEdges();
+
+			        return true;
+		        }
+            }
+	        return false;
+        }
+
+        private void iterate(int value)
+        {
+            for (int i = 0; i < bufferSize; i++)
+                nextPixel(buffer[i], value);
+        }
+
+        private void nextPixel(int i, int value)
+        {
+            if ((i - width) > 0)
+            {
+                checkPixel(pixels[i - width - 1], value);   //top left
+                checkPixel(pixels[i - width], value);       //top center
+                checkPixel(pixels[i - width + 1], value);   //top right
+            }
+
+            if (i % width != 0)
+                checkPixel(pixels[i - 1], value);   //center left
+            if (i % (width + 1) != 0)
+                checkPixel(pixels[i + 1], value);   //center right
+
+            if ((i + width) < total)
+            {
+                checkPixel(pixels[i + width - 1], value);   //bottom left
+                checkPixel(pixels[i + width], value);       //bottom center
+                checkPixel(pixels[i + width + 1], value);   //bottom right
+            }
+        }
+        private bool checkPixel(ref pixel p, int value)
+        {
+            if (p.value < value)
+            {
+                if (!p.selected)
+                {
+                    buffer.Add(p.id);
+                    p.selected = true;
+                    bufferSize++;
+                    Tree::insert(buff, p.id);
+                    return true;
+                }
+            }
+            return false;
+        }
+        private void fillPixels()
+        {
+            Filler fill(pixels, width, total);
+
+            for (int i = 0; i < bufferSize; i++)
+                fill.getBounds(buffer[i]);
+
+            int count = 0;
+
+            for (int i = 0; i < bufferSize; i++)
+            {
+                if (buffer[i] + width < total && !pixels[buffer[i] + width].selected && pixels[buffer[i] + width].value >= VALUE_THRESHOLD)
+                {
+                    fill.start(buffer[i] + width);
+
+                    List<pathDirection> whitePixels = fill.getPath();
+
+                    if (whitePixels.Count != 0)
+                    {
+                        for (int i = 0; i < whitePixels.size(); i++)
+                        {
+                            buffer.Add(whitePixels[i].id);
+                            Tree::insert(buff, whitePixels[i].id);
+                            count++;
+                        }
+                    }
+                }
+            }
+
+            fill.clearFoundBuffer();
+
+            bufferSize += count;
+        }
+        private void findEdges()
+        {
+            Edge e(width, total);
+
+            e.detect(buffer, buff);
+
+            perimeter = e.getPerimiter();
+            numEdges = e.getEdges();
+        }
+        public ref List<long> getBuffer()
+        {
+	        return ref buffer;
+        }
+        public ref List<long>  getPerimeter()
+        {
+	        return ref perimeter;
+        }
+        public int getEdges()
+        {
+            return numEdges;
+        }
+        public void clearBuffer()
+        {
+            buffer.Clear();
+            bufferSize = 0;
+            Tree::deleteTree(buff);
+            buff = null;
+        }
+
+        private pixel[] pixels;
+        private int width, total;
+
+        private List<long> buffer, perimeter;
+        private int bufferSize, numEdges;
+
+        private node buff;
+
+        private readonly string selection_err = "::SELECTION::error : ";
+    }
+}
