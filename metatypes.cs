@@ -24,7 +24,7 @@ namespace sharpclean
         public bool selected = false;  //used for selection
         public bool found = false;
         public byte value = 255;        //grey value
-        public long id = -1;            //ID [0->totalpixels]
+        public int id = -1;            //ID [0->totalpixels]
     };
     //edge and filler use this for navigation around the pixel map
     enum direction
@@ -37,7 +37,7 @@ namespace sharpclean
         public direction dir = direction.none;
         public int id = -1;
 
-        pathDirection(direction d, int i) { dir = d; id = i; }
+        public pathDirection(direction d, int i) { dir = d; id = i; }
     };
     //each pixel has eight neighbors
     class octan
@@ -45,13 +45,24 @@ namespace sharpclean
         public int tl = -1, t = -1, tr = -1,
                    l = -1, r = -1,
                    bl = -1, b = -1, br = -1;
+
+        public octan() {
+            tl = -1; t = -1; tr = -1;
+            l = -1; r = -1;
+            bl = -1; b = -1; br = -1;
+        }
     };
     //same deal, different use
-    enum neighbor
+    class neighbor
     {
-        tl, t, tr,
-        l, r,
-        bl, b, br
+        public readonly int tl = 0;
+        public readonly int t = 1;
+        public readonly int tr = 2;
+        public readonly int l = 3;
+        public readonly int r = 4;
+        public readonly int bl = 5;
+        public readonly int b = 6;
+        public readonly int br = 7;
     };
     //confidence class
     class conf
@@ -62,10 +73,11 @@ namespace sharpclean
                         o_val = 0.0, d_val = 0.0;
         public bool isObj;
     };
-    //don't remember, too scared to delete
-    /*class Tup
+    //for building the tree
+    class tup
     {
         public int s, e;
-        Tup(int st, int en) { s = st; e = en; }
-    };*/
+        public tup(int st, int en) { s = st; e = en; }
+        public void change(int st, int en) { s = st; e = en; }
+    };
 }

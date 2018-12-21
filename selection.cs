@@ -76,7 +76,7 @@ namespace sharpclean
                     buffer.Add(p.id);
                     p.selected = true;
                     bufferSize++;
-                    Tree::insert(buff, p.id);
+                    tree.insert(buff, p.id);
                     return true;
                 }
             }
@@ -84,7 +84,7 @@ namespace sharpclean
         }
         private void fillPixels()
         {
-            Filler fill(pixels, width, total);
+            filler fill = new filler(pixels, width, total);
 
             for (int i = 0; i < bufferSize; i++)
                 fill.getBounds(buffer[i]);
@@ -119,7 +119,7 @@ namespace sharpclean
         }
         private void findEdges()
         {
-            Edge e(width, total);
+            edge e(width, total);
 
             e.detect(buffer, buff);
 
@@ -142,7 +142,6 @@ namespace sharpclean
         {
             buffer.Clear();
             bufferSize = 0;
-            Tree::deleteTree(buff);
             buff = null;
         }
 
