@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace sharpclean
 {
@@ -11,41 +12,40 @@ namespace sharpclean
         public bool load(string filename)
         {
             System.IO.StreamReader infile = null;
-
-            try {
+            try
+            {
                 infile = new System.IO.StreamReader(filename);
             }
-            catch (System.IO.FileNotFoundException) {
+
+            catch (System.IO.FileNotFoundException)
+            {
                 Console.WriteLine(image_err + "could not open file: " + filename + "\n");
                 return false;
             }
-
             //first line is always version
             mdata.filetype = infile.ReadLine().Substring(0, 2);
             Console.WriteLine(mdata.filetype);
-
-            if (!(mdata.filetype != "P5" || mdata.filetype != "P2")) {
+            if (!(mdata.filetype != "P5" || mdata.filetype != "P2"))
+            {
                 Console.WriteLine(image_err + "invalid file type: " + mdata.filetype + "\n");
                 return false;
             }
-
             //ignore comments
             string comments = "";
-            while (true) {
+            while (true)
+            {
                 comments = infile.ReadLine();
                 Console.WriteLine(comments);
                 if (comments[0] != '#') break;
             }
-
             //get width, height, and total
             string[] ss = comments.Split();
             Console.WriteLine(ss[0] + "," + ss[1]);
-
-            mdata.width  = int.Parse(ss[0]);
+            mdata.width = int.Parse(ss[0]);
             mdata.height = int.Parse(ss[1]);
             mdata.totalpixels = mdata.width * mdata.height;
             Console.WriteLine(mdata.totalpixels);
-
+            
             //get maximum grey value in file
             mdata.maxgreyval = Convert.ToInt16(infile.ReadLine());
             Console.WriteLine(mdata.maxgreyval);
@@ -54,41 +54,49 @@ namespace sharpclean
             if (mdata.filetype == "P2") loadP2(infile);
             else loadP5(infile);
 
-            
             Console.WriteLine("successfully loaded...\n");
             dataLoaded = true;
-            
             return true;
         }
 
         public void write(string filename)
         {
-            if (!dataLoaded) {
-                Console.WriteLine(image_err + "image data not loaded\n");
-                return;
+            using (StreamWriter writer = new StreamWriter(filename, true))
+            {
+                if (!dataLoaded)
+                {
+                    Console.WriteLine(image_err + "image data not loaded\n");
+                    return;
+                }
+
+                if (mdata.filetype == "P2")
+                {
+                    writer.Write(mdata.filetype + "\n" + mdata.width + " " + mdata.height + "\n" + mdata.maxgreyval + "\n");
+                    for (int i = 0; i < mdata.totalpixels; i++)
+                    {
+                        writer.WriteLine(Convert.ToString(pixels[i].value));
+                    }
+                }
+
+                else
+                {
+                    System.Console.WriteLine("P5 Writing");
+                    writer.Write(mdata.filetype + "\n" + mdata.width + " " + mdata.height + "\n" + mdata.maxgreyval + "\n");
+                    for (int i = 0; i < mdata.totalpixels; i++) //ofile >> std::hex >> pixels[i].value;
+                        writer.Write(Convert.ToString(pixels[i].value));
+                
+                }
             }
 
-            if (mdata.filetype == "P2") {
-                System.IO.File.WriteAllText(filename, mdata.filetype + "\n" + mdata.width + " " + mdata.height + "\n" + mdata.maxgreyval + "\n");
-
-                for (int i = 0; i < mdata.totalpixels; i++)
-                    System.IO.File.WriteAllText(filename, Convert.ToString(pixels[i].value) + "\n");
-            }
-            else {
-                System.IO.File.WriteAllText(filename, mdata.filetype + "\n" + mdata.width + " " + mdata.height + "\n" + mdata.maxgreyval + "\n");
-
-                for (int i = 0; i < mdata.totalpixels; i++) //ofile >> std::hex >> pixels[i].value;
-                    System.IO.File.WriteAllText(filename, Convert.ToString(pixels[i].value));
-            }
         }
-
         private void loadP2(System.IO.StreamReader f)
         {
             pixels = new pixel[mdata.totalpixels];
             string line;
             int i = 0;
 
-            while ((line = f.ReadLine()) != null) {
+            while ((line = f.ReadLine()) != null)
+            {
                 pixels[i].value = Convert.ToByte(line);
                 pixels[i].id = i;
                 pixels[i].found = false;
@@ -101,27 +109,29 @@ namespace sharpclean
         {
             pixels = new pixel[mdata.totalpixels];
             byte[] buffer = new byte[mdata.totalpixels];
-
             string strbuff = f.ReadLine();
             buffer = Encoding.ASCII.GetBytes(strbuff);
-
-            for (int i = 0; i < mdata.totalpixels; i++) {
+            for (int i = 0; i < mdata.totalpixels; i++)
+            {
                 pixels[i].value = buffer[i];
                 pixels[i].id = i;
                 pixels[i].selected = false;
                 pixels[i].found = false;
             }
+
         }
 
         public void printmenu()
         {
-            if (!dataLoaded) {
+            if (!dataLoaded)
+            {
                 Console.WriteLine(image_err + "image data not loaded\n");
                 return;
             }
 
             int n = 0;
-            if (cmd.getcmd("[1]print all, [2]image data menu, [q]quit - ", ref n, 1)) {
+            if (cmd.getcmd("[1]print all, [2]image data menu, [q]quit - ", ref n, 1))
+            {
                 switch (n)
                 {
                     case 1: print(); break;
@@ -181,7 +191,6 @@ namespace sharpclean
         private data mdata;
         private pixel[] pixels;
         private command cmd = new command();
-
         private readonly string image_err = "::IMAGE::error : ";
     }
 }

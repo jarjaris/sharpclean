@@ -13,29 +13,24 @@ namespace sharpclean
             string u = "", t = "";
             int n = -1;
             bool good = false;
-
             for (int i = 0; i < level; i++) t += tab;
-
             Console.WriteLine(t + question);
-
             while (!good)
             {
                 u = Console.ReadLine();
-
                 if (u == quit) break;
                 else
                 {
                     try { n = Convert.ToInt32(u); }
-                    catch (InvalidCastException) {
+                    catch (InvalidCastException)
+                    {
                         Console.WriteLine(command_err + "invalid command\n");
                         continue;
                     }
-
                     good = true;
                     cmd = n;
                 }
             }
-
             return good;
         }
 
@@ -43,15 +38,11 @@ namespace sharpclean
         {
             string u = "", t = "";
             bool good = false;
-
-            for(int i = 0; i < level; i++) t += tab;
-
+            for (int i = 0; i < level; i++) t += tab;
             Console.WriteLine(t + question);
-
             while (!good)
             {
                 u = Console.ReadLine();
-
                 if (u == quit) break;
                 else if (u.Length > filetype.Length)
                 {
@@ -63,9 +54,7 @@ namespace sharpclean
                 else
                     Console.WriteLine(tab + command_err + "bad file name - " + u + "\n");
             }
-
             file = u;
-
             return good;
         }
 

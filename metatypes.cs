@@ -13,11 +13,13 @@ namespace sharpclean
         public int width, height, maxgreyval;
         public int totalpixels;
     };
+
     //used for the menu's when the user selects to print certain data
     enum info
     {
         ALL, FILETYPE, DIMENSIONS, TOTALPIXELS, MAXGREYVAL
     };
+
     //a basic pixel class
     struct pixel
     {
@@ -26,19 +28,21 @@ namespace sharpclean
         public byte value;        //grey value
         public int id;            //ID [0->totalpixels]
     };
+
     //edge and filler use this for navigation around the pixel map
     enum direction
     {
         none, up, down, left, right
     };
+
     //same deal, a little more abstract
     class pathDirection
     {
         public direction dir = direction.none;
         public int id = -1;
-
         public pathDirection(direction d, int i) { dir = d; id = i; }
     };
+
     //each pixel has eight neighbors
     class octan
     {
@@ -46,12 +50,14 @@ namespace sharpclean
                    l = -1, r = -1,
                    bl = -1, b = -1, br = -1;
 
-        public octan() {
+        public octan()
+        {
             tl = -1; t = -1; tr = -1;
             l = -1; r = -1;
             bl = -1; b = -1; br = -1;
         }
     };
+
     //same deal, different use
     class neighbor
     {
@@ -64,15 +70,17 @@ namespace sharpclean
         public readonly int b = 6;
         public readonly int br = 7;
     };
+
     //confidence class
     public class conf
     {
-        public double   obj = 0.0, dust = 0.0,
+        public double obj = 0.0, dust = 0.0,
                         o_size = 0.0, d_size = 0.0,
                         o_edge = 0.0, d_edge = 0.0,
                         o_val = 0.0, d_val = 0.0;
         public bool isObj;
     };
+
     //for building the tree
     class tup
     {

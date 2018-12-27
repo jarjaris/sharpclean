@@ -15,15 +15,12 @@ namespace sharpclean
             value(c, d[0]);
             size(c, d[1]);
             edges(c, d[2]);
-
             c.dust = c.d_edge + c.d_size + c.d_val;
             c.obj = c.o_edge + c.o_size + c.o_val;
-
             if (c.dust > c.obj)
                 c.isObj = false;
             else
                 c.isObj = true;
-
             return c;
         }
         private static void edges(conf c, double d)
@@ -43,6 +40,7 @@ namespace sharpclean
             else if (d < 98.85) c.o_edge += 59.56;
             else c.o_edge += 95.00;
         }
+
         private static void size(conf c, double d)
         {
             if (d < 30) c.d_size += 99.00;
@@ -64,6 +62,7 @@ namespace sharpclean
             c.d_size -= 25;
             c.o_size -= 25;
         }
+
         private static void value(conf c, double d)
         {
             if (d < 30) c.d_val += 1.00;
