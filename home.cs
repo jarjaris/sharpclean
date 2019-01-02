@@ -32,7 +32,6 @@ namespace sharpclean
         }
 
         //initial menu when no image is loaded
-
         private void startmenu()
         {
             int n = 0;
@@ -48,7 +47,6 @@ namespace sharpclean
         }
 
         //menu with all options, only when image is loaded
-
         private void fullmenu()
         {
             int n = 0;
@@ -80,7 +78,6 @@ namespace sharpclean
         }
 
         //loads a pgm
-
         private void loadfile()
         {
             string f = "";
@@ -104,7 +101,6 @@ namespace sharpclean
         }
 
         //writes to a pgm
-
         private void writefile()
         {
             if (img != null)
@@ -120,18 +116,12 @@ namespace sharpclean
             else System.Console.WriteLine(home_err + "no image loaded to save");
         }
 
-
-
         //if toolbox is set up give it up then give up the loaded image
-
         private void deleteimage()
         {
-            if (t != null)
-                t = null;
+            t = null;
             img = null;
         }
-
-
 
         private bool good = true;
         private command cmd = new command();
