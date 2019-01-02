@@ -27,6 +27,11 @@ namespace sharpclean
                         Console.WriteLine(command_err + "invalid command\n");
                         continue;
                     }
+                    catch(SystemException)
+                    {
+                        Console.WriteLine(command_err + "invalid command\n");
+                        continue;
+                    }
                     good = true;
                     cmd = n;
                 }
