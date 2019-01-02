@@ -14,7 +14,7 @@ namespace sharpclean
             System.IO.StreamReader infile = null;
             try
             {
-                infile = new System.IO.StreamReader(filename);
+                infile = new System.IO.StreamReader(filename, Encoding.UTF7);
             }
 
             catch (System.IO.FileNotFoundException)
@@ -61,31 +61,47 @@ namespace sharpclean
 
         public void write(string filename)
         {
-            using (StreamWriter writer = new StreamWriter(filename, true))
+            if (!dataLoaded) {
+                Console.WriteLine(image_err + "image data not loaded\n");
+                return;
+            }
+
+            if (mdata.filetype == "P2")
             {
-                if (!dataLoaded)
+                StreamWriter p2write = new StreamWriter(filename, false);
+
+                Console.WriteLine("P2 Writing");
+                p2write.Write(mdata.filetype + "\n" + mdata.width + " " + mdata.height + "\n" + mdata.maxgreyval + "\n");
+
+                for (int i = 0; i < mdata.totalpixels; i++)
+                    p2write.WriteLine(Convert.ToString(pixels[i].value));
+            }
+            else
+            {
+                StreamWriter p2write = new StreamWriter(filename, false, Encoding.UTF8);
+
+                Console.WriteLine("P5 Writing");
+                p2write.Write(mdata.filetype + "\n" + mdata.width + " " + mdata.height + "\n" + mdata.maxgreyval + "\n");
+
+                for (int i = 0; i < mdata.totalpixels; i++)
+                    p2write.Write(Convert.ToChar(pixels[i].value));
+
+                /*
+                FileStream p5write;
+
+                try { p5write = new FileStream(filename, FileMode.Truncate); }
+                catch (IOException)
                 {
-                    Console.WriteLine(image_err + "image data not loaded\n");
-                    return;
+                    p5write = new FileStream(filename, FileMode.Create);
                 }
 
-                if (mdata.filetype == "P2")
-                {
-                    writer.Write(mdata.filetype + "\n" + mdata.width + " " + mdata.height + "\n" + mdata.maxgreyval + "\n");
-                    for (int i = 0; i < mdata.totalpixels; i++)
-                    {
-                        writer.WriteLine(Convert.ToString(pixels[i].value));
-                    }
-                }
+                Console.WriteLine("P2 Writing");
 
-                else
-                {
-                    System.Console.WriteLine("P5 Writing");
-                    writer.Write(mdata.filetype + "\n" + mdata.width + " " + mdata.height + "\n" + mdata.maxgreyval + "\n");
-                    for (int i = 0; i < mdata.totalpixels; i++) //ofile >> std::hex >> pixels[i].value;
-                        writer.Write(Convert.ToString(pixels[i].value));
-                
-                }
+                byte[] info = new UTF8Encoding(true).GetBytes(mdata.filetype + "\n" + mdata.width + " " + mdata.height + "\n" + mdata.maxgreyval + "\n");
+                p5write.Write(info, 0, info.Length);
+
+                for (int i = 0; i < mdata.totalpixels; i++)
+                    p5write.WriteByte(Convert.ToChar(pixels[i].value);*/
             }
 
         }
@@ -108,6 +124,19 @@ namespace sharpclean
         private void loadP5(System.IO.StreamReader f)
         {
             pixels = new pixel[mdata.totalpixels];
+            char[] buffer;
+
+            buffer = f.ReadToEnd().ToCharArray();
+
+            for (int i = 0; i < mdata.totalpixels; i++)
+            {
+                pixels[i].value = Convert.ToByte(buffer[i]);
+                pixels[i].id = i;
+                pixels[i].selected = false;
+                pixels[i].found = false;
+            }
+
+            /*pixels = new pixel[mdata.totalpixels];
             byte[] buffer = new byte[mdata.totalpixels];
             string strbuff = f.ReadLine();
             buffer = Encoding.ASCII.GetBytes(strbuff);
@@ -117,14 +146,13 @@ namespace sharpclean
                 pixels[i].id = i;
                 pixels[i].selected = false;
                 pixels[i].found = false;
-            }
+            }*/
 
         }
 
         public void printmenu()
         {
-            if (!dataLoaded)
-            {
+            if (!dataLoaded) {
                 Console.WriteLine(image_err + "image data not loaded\n");
                 return;
             }
@@ -132,8 +160,7 @@ namespace sharpclean
             int n = 0;
             if (cmd.getcmd("[1]print all, [2]image data menu, [q]quit - ", ref n, 1))
             {
-                switch (n)
-                {
+                switch (n) {
                     case 1: print(); break;
                     case 2: printChoice(); break;
                 }
