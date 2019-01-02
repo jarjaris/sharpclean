@@ -71,37 +71,22 @@ namespace sharpclean
                 StreamWriter p2write = new StreamWriter(filename, false);
 
                 Console.WriteLine("P2 Writing");
-                p2write.Write(mdata.filetype + "\n" + mdata.width + " " + mdata.height + "\n" + mdata.maxgreyval + "\n");
+                p2write.Write(mdata.filetype + "\n" + "# Created by Sharp Clean Software\n" + mdata.width + " " + mdata.height + "\n" + mdata.maxgreyval + "\n");
 
                 for (int i = 0; i < mdata.totalpixels; i++)
                     p2write.WriteLine(Convert.ToString(pixels[i].value));
             }
             else
             {
-                StreamWriter p2write = new StreamWriter(filename, false, Encoding.UTF8);
+                StreamWriter p5write = new StreamWriter(filename, false, Encoding.Default);
 
                 Console.WriteLine("P5 Writing");
-                p2write.Write(mdata.filetype + "\n" + mdata.width + " " + mdata.height + "\n" + mdata.maxgreyval + "\n");
+                p5write.Write(mdata.filetype + "\n# Created by Sharp Clean Software\n" + mdata.width + " " + mdata.height + "\n" + mdata.maxgreyval + "\n");
 
                 for (int i = 0; i < mdata.totalpixels; i++)
-                    p2write.Write(Convert.ToChar(pixels[i].value));
+                    p5write.Write(Convert.ToChar(pixels[i].value));
 
-                /*
-                FileStream p5write;
-
-                try { p5write = new FileStream(filename, FileMode.Truncate); }
-                catch (IOException)
-                {
-                    p5write = new FileStream(filename, FileMode.Create);
-                }
-
-                Console.WriteLine("P2 Writing");
-
-                byte[] info = new UTF8Encoding(true).GetBytes(mdata.filetype + "\n" + mdata.width + " " + mdata.height + "\n" + mdata.maxgreyval + "\n");
-                p5write.Write(info, 0, info.Length);
-
-                for (int i = 0; i < mdata.totalpixels; i++)
-                    p5write.WriteByte(Convert.ToChar(pixels[i].value);*/
+                p5write.Flush();
             }
 
         }
@@ -124,9 +109,9 @@ namespace sharpclean
         private void loadP5(System.IO.StreamReader f)
         {
             pixels = new pixel[mdata.totalpixels];
-            char[] buffer;
+            char[] buffer = new char[mdata.totalpixels];
 
-            buffer = f.ReadToEnd().ToCharArray();
+            f.ReadBlock(buffer, 0, mdata.totalpixels);
 
             for (int i = 0; i < mdata.totalpixels; i++)
             {
@@ -136,18 +121,9 @@ namespace sharpclean
                 pixels[i].found = false;
             }
 
-            /*pixels = new pixel[mdata.totalpixels];
-            byte[] buffer = new byte[mdata.totalpixels];
-            string strbuff = f.ReadLine();
-            buffer = Encoding.ASCII.GetBytes(strbuff);
-            for (int i = 0; i < mdata.totalpixels; i++)
-            {
-                pixels[i].value = buffer[i];
-                pixels[i].id = i;
-                pixels[i].selected = false;
-                pixels[i].found = false;
-            }*/
+            mdata.buffersize = buffer.Length;
 
+            Console.WriteLine(mdata.buffersize);
         }
 
         public void printmenu()
