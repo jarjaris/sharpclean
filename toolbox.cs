@@ -64,7 +64,7 @@ namespace sharpclean
                     conf c = confidence.getconfidence(data);
 
                     if (!c.isObj)
-                        colorbuffer(255, Convert.ToInt32(data[1]));
+                        colorbuffer(150, Convert.ToInt32(data[1]));
                     
                     if (writeData)
                         printcsv(ref c);
@@ -129,7 +129,8 @@ namespace sharpclean
         private pixel[] pixels = null;
         private command cmd = new command();
         private int imageWidth, totalPixels;
-        private List<int> buffer, perimeter;
+        private List<int> buffer = new List<int>();
+        private List<int> perimeter = new List<int>();
         private double[] data = new double[3]; //average value, size, number of edges
         private string ofilename;
         private readonly string toolbox_err = "::TOOLBOX::error : ";
