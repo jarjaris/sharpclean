@@ -50,7 +50,7 @@ namespace sharpclean
 
         private void nextPixel(long i, int value)
         {
-            if ((i - width) > 0)
+            if ((i - width - 1) > 0)
             {
                 checkPixel(ref pixels[i - width - 1], value);   //top left
                 checkPixel(ref pixels[i - width], value);       //top center
@@ -62,7 +62,7 @@ namespace sharpclean
             if (i % (width + 1) != 0)
                 checkPixel(ref pixels[i + 1], value);   //center right
 
-            if ((i + width) < total-1)
+            if ((i + width + 1) < total)
             {
                 checkPixel(ref pixels[i + width - 1], value);   //bottom left
                 checkPixel(ref pixels[i + width], value);       //bottom center
